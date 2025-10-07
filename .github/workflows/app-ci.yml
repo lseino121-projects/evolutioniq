@@ -85,20 +85,28 @@ jobs:
           VERSION: ${{ steps.semver.outputs.version }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          set -euo pipefail
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
+          # bump chart version
           sed -i.bak "s/tag: .*/tag: ${VERSION}/" charts/demo-stack/values.yaml && rm charts/demo-stack/values.yaml.bak
 
           git add charts/demo-stack/values.yaml
-          git diff --cached --quiet || git commit -m "chore(release): bump chart tag to ${VERSION} [skip ci]"
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(release): bump chart tag to ${VERSION} [skip ci]"
+            git tag ${VERSION}
+            
+            # force remote to use token
+            git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
+            
+            # push commit + tags explicitly to main
+            git push origin HEAD:main --tags
+          else
+            echo "No changes to commit"
+          fi
 
-          git tag ${VERSION}
-
-          # ✅ rewrite remote to use the token
-          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
-
-          git push origin HEAD:main --tags
 
 
 
