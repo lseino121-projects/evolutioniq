@@ -3,10 +3,10 @@ namespace: demo
 images:
   backend:
     repository: 971146591534.dkr.ecr.us-east-1.amazonaws.com/demo-backend
-    tag: 0.1.0
+    tag: 0.1.1
   frontend:
     repository: 971146591534.dkr.ecr.us-east-1.amazonaws.com/demo-frontend
-    tag: 0.1.0
+    tag: 0.1.1
 service:
   type: ClusterIP
   frontendPort: 80
