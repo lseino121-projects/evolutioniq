@@ -88,14 +88,13 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          # cross-platform sed (works on GNU & BSD)
           sed -i.bak "s/tag: .*/tag: ${VERSION}/" charts/demo-stack/values.yaml && rm charts/demo-stack/values.yaml.bak
 
           git add charts/demo-stack/values.yaml
-          git diff --cached --quiet || git commit -m "chore(release): bump chart tag to ${VERSION}"
-          git tag ${VERSION}
+          git diff --cached --quiet || git commit -m "chore(release): bump chart tag to ${VERSION} [skip ci]"
 
-          # push using token explicitly
-          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }} HEAD:${{ github.ref }} --follow-tags
+          git tag ${VERSION}
+          git push origin HEAD:main --tags
+
 
 
