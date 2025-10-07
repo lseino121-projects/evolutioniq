@@ -2,8 +2,8 @@ module "eks_cluster" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 21.0"
 
-  name               = "${local.name}-al2023"
-  kubernetes_version = var.cluster_version
+  name                   = "${local.name}-al2023"
+  kubernetes_version     = var.cluster_version
   endpoint_public_access = true
 
   # EKS Addons
@@ -20,7 +20,7 @@ module "eks_cluster" {
 
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
-    # ✅ Access entries (map IAM → Kubernetes RBAC)
+  # ✅ Access entries (map IAM → Kubernetes RBAC)
   access_entries = {
     me = {
       principal_arn = "arn:aws:iam::971146591534:user/pulsedrop"
