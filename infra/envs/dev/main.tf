@@ -1,5 +1,5 @@
-locals { 
-  name = "devops-prep-project"
+locals {
+  name     = "devops-prep-project"
   vpc_cidr = "10.20.0.0/16"
   azs      = slice(data.aws_availability_zones.available.names, 0, 3)
 
