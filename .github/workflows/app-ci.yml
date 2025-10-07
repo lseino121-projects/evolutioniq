@@ -40,7 +40,7 @@ jobs:
           pytest -q
 
       - name: Frontend build
-        working-directory: app/frontend
+        working-directory: apps/frontend
         run: |
           npm install
           npm run build || echo "No build step, serving static index"
@@ -63,7 +63,7 @@ jobs:
           FRONT=$ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO-frontend:$VERSION
           BACK=$ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO-backend:$VERSION
 
-          docker build -t $FRONT app/frontend
+          docker build -t $FRONT apps/frontend
           docker push $FRONT
 
           docker build -t $BACK app/backend
