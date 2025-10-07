@@ -3,7 +3,7 @@ on:
   push:
     branches: [ "main" ]   # only main for now
     paths:
-      - 'app/**'
+      - 'apps/**'
       - 'charts/**'
       - '.github/workflows/app-ci.yml'
   workflow_dispatch: {}
