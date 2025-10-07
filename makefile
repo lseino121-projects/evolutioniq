@@ -20,10 +20,12 @@ login-ecr: ## Docker login to ECR
 	./scripts/ecr_login.sh $(AWS_REGION)
 
 build-app: login-ecr ## Build & push images (frontend/backend)
-	docker build -t $(ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/$(ECR_REPO)-frontend:$(APP_VERSION) apps/frontend
-	docker push $(ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/$(ECR_REPO)-frontend:$(APP_VERSION)
-	docker build -t $(ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/$(ECR_REPO)-backend:$(APP_VERSION) apps/backend
-	docker push $(ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/$(ECR_REPO)-backend:$(APP_VERSION)
+	ACCOUNT_ID=$$(aws sts get-caller-identity --query Account --output text); \
+	FRONT=$$ACCOUNT_ID.dkr.ecr.$(AWS_REGION).amazonaws.com/$(ECR_REPO)-frontend:$(APP_VERSION); \
+	BACK=$$ACCOUNT_ID.dkr.ecr.$(AWS_REGION).amazonaws.com/$(ECR_REPO)-backend:$(APP_VERSION); \
+	docker buildx build --platform linux/amd64 -t $$FRONT apps/frontend --push; \
+	docker buildx build --platform linux/amd64 -t $$BACK apps/backend --push
+
 
 release-bump: ## Bump semver (patch by default)
 	python3 scripts/release_bump.py $(APP_VERSION) patch

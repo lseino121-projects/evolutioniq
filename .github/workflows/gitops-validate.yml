@@ -1,0 +1,24 @@
+name: gitops-validate
+on:
+  pull_request:
+    paths:
+      - 'charts/**'
+      - 'gitops/**'
+  workflow_dispatch: {}
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Helm template chart
+        run: |
+          helm dependency update charts/demo-stack || true
+          helm template demo charts/demo-stack -f charts/demo-stack/values.yaml > /tmp/rendered.yaml
+
+      - name: OPA/Conftest checks
+        uses: instrumenta/conftest-action@v0.3
+        with:
+          files: /tmp/rendered.yaml
+          policy: ci/conftest/kubernetes
