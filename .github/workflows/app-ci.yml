@@ -94,6 +94,10 @@ jobs:
           git diff --cached --quiet || git commit -m "chore(release): bump chart tag to ${VERSION} [skip ci]"
 
           git tag ${VERSION}
+
+          # ✅ rewrite remote to use the token
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
+
           git push origin HEAD:main --tags
 
 
