@@ -20,9 +20,6 @@ env:
 jobs:
   build-test-scan-push:
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write     # OIDC
-      contents: read
     steps:
       - uses: actions/checkout@v4
 
