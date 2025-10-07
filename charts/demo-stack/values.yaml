@@ -1,0 +1,20 @@
+replicaCount: 2
+namespace: demo
+images:
+  backend:
+    repository: REPLACE_ECR/demo-backend
+    tag: 0.1.0
+  frontend:
+    repository: REPLACE_ECR/demo-frontend
+    tag: 0.1.0
+service:
+  type: ClusterIP
+  frontendPort: 80
+  backendPort: 8080
+resources:
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+  limits:
+    cpu: "500m"
+    memory: "512Mi"
