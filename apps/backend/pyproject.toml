@@ -1,12 +1,17 @@
 [project]
+name = "demo-backend"
+version = "0.1.0"
+description = "FastAPI backend"
+requires-python = ">=3.11"
 dependencies = [
-  "fastapi",
-  "uvicorn[standard]",
-  "psycopg[binary]",
-  "pydantic",
+    "fastapi",
+    "uvicorn[standard]",
+    "psycopg[binary]",
+    "pydantic"
 ]
 
 [project.optional-dependencies]
-dev = ["pytest"]
+dev = ["pytest", "httpx"]
+
 [tool.pytest.ini_options]
 pythonpath = ["."]
